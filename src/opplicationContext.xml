@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"><!--全局自动注入default-autowire="byName"-->
+
+     <bean id="usersDao" class="com.wsk.dao.impl.UsersDaoImpl"/>
+     <bean id="usersMybatisDao" class="com.wsk.dao.impl.UsersMybatisDaoImpl"/>
+     <bean id="usersService" name="name1,name2,name3" class="com.wsk.service.impl.UsersServiceImpl">
+<!--注入基本类型和字符串-->
+          <property name="usersDao" ref="usersDao" />
+          <property name="username" value="context" />
+          <property name="userage" value="23"/>
+<!--注入list-->
+          <property name="list">
+               <list>
+                    <value>bjsxt</value>
+                    <value>woddr</value>
+                    <value>exvcel</value>
+               </list>
+          </property>
+          <property name="users" >
+               <list>
+                    <bean class="com.wsk.pojo.Users">
+                         <property name="username" value="bjsxt" />
+                         <property name="usersex" value="nan"  />
+                         <property name="usersid" value="1"/>
+                    </bean>
+                    <bean class="com.wsk.pojo.Users">
+                         <property name="username" value="bj" />
+                         <property name="usersex" value="nan"  />
+                         <property name="usersid" value="2"/>
+                     </bean>
+               </list>
+          </property>
+          <!--               使用set集合注入-->
+          <property name="selusers">
+               <set>
+                    <bean class="com.wsk.pojo.Users">
+                         <property name="usersid" value="1"/>
+                         <property name="username" value="test"/>
+                         <property name="usersex" value="nv"/>
+                    </bean>
+               </set>
+          </property>
+          
+<!--          使用Map注入-->
+          <property name="map">
+               <map>
+                    <entry key="userid" value="1"/>
+                    <entry key="username" value="nihao" />
+                    <entry key="usersex" value="mengl" />
+               </map>
+          </property>
+          <!--<property name="usersDao">
+               <ref bean="usersMybatisDao"/>
+          </property>-->
+          <!--<constructor-arg name="usersDao">
+               <ref bean="usersMybatisDao"/>
+          </constructor-arg>-->
+<!--         使用Map方法实现注入-->
+         <property name="mapusers">
+             <map>
+                 <entry key="users1" value-ref="users1"/>
+                 <entry key="users2" value-ref="users2"/>
+             </map>
+         </property>
+
+
+<!--         注入Properties-->
+         <property name="properties">
+             <props>
+                 <prop key="prop1"> propvalue1</prop>
+                 <prop key="prop2"> propvalue2</prop>
+             </props>
+         </property>
+     </bean>
+    <bean id="users1" class="com.wsk.pojo.Users">
+        <property name="username" value="bjsxt" />
+        <property name="usersex" value="nan"  />
+        <property name="usersid" value="1"/>
+    </bean>
+    <bean id="users2" class="com.wsk.pojo.Users">
+        <property name="username" value="bj" />
+        <property name="usersex" value="nan"  />
+        <property name="usersid" value="2"/>
+    </bean>
+
+<!--    &lt;!&ndash;    通过静态方法实例化对象&ndash;&gt;
+    <bean id="usersService2" class="com.wsk.factory.ObjectFactory" factory-method="getInstance"/>
+
+
+    &lt;!&ndash;    通过动态方法实力画对象&ndash;&gt;
+    <bean id="dynamicObjectFactory" class="com.wsk.factory.DynamicObjectFactory"/>
+    <bean id="usersService3" factory-bean="dynamicObjectFactory" factory-method="getInstance"/>-->
+
+</beans>
